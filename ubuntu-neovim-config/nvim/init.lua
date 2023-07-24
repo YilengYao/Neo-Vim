@@ -15,4 +15,4 @@ require(string.format("%s.plugins.lsp.null-ls", username))
 require(string.format("%s.plugins.autopairs", username))
 require(string.format("%s.plugins.treesitter", username))
 require(string.format("%s.plugins.gitsigns", username))
-
+require(string.format("%s.plugins.vim-visual-multi", username))
