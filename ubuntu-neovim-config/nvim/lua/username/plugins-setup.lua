@@ -101,6 +101,7 @@ return packer.startup(function(use)
       ts_update()
     end,
   })
+  use("nvim-treesitter/playground") -- :TSPlaygroundToggle in normal mode to access playground
 
   -- auto closing
   use("windwp/nvim-autopairs") -- autoclose params, brackets, quotes, etc...
