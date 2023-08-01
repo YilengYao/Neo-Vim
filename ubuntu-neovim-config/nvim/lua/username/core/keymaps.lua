@@ -7,8 +7,8 @@ local keymap = vim.keymap -- for conciseness
 -- -- press j + k exits insert mode
 keymap.set("i", "jk", "<ESC>")
 
--- -- press space + n + h will clear search
-keymap.set("n", "<leader>nh", ":nohl<CR>")
+-- -- press space + / will clear search
+keymap.set("n", "<leader>/", ":nohl<CR>")
 
 -- -- normal mode press x key will delete single character and not copy to register
 keymap.set("n", "x", '"_x')
@@ -37,7 +37,7 @@ keymap.set("n", "<leader>tp", ":tabp<CR>") -- go toprevious tab
 -- -------------------
 
 -- vim-maximizer
-keymap.set("n", "<leader>sm", ":MaximizerToggle<CCR>") -- space + s + m maximizes the split window or restore to original size
+keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>") -- space + s + m maximizes the split window or restore to original size
 
 -- nvim-tree
 keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>") -- space + e opens up the nvim tree explorer
