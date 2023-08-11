@@ -1,7 +1,7 @@
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-  if fn.empty(fn.glob(install_path)) > 0 then   
+  if fn.empty(fn.glob(install_path)) > 0 then
     fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
     vim.cmd([[packadd packer.nvim]])
     return true
@@ -48,9 +48,9 @@ return packer.startup(function(use)
 
   -- file explorer
   use("nvim-tree/nvim-tree.lua") -- :NvimTreeToggle in normal mode to access file explorer 
- 
+
   -- icons
-  use("kyazdani42/nvim-web-devicons")
+  use("nvim-tree/nvim-web-devicons")
 
   -- statusline
   use("nvim-lualine/lualine.nvim")
@@ -63,6 +63,8 @@ return packer.startup(function(use)
   use("hrsh7th/nvim-cmp") -- completion plugin
   use("hrsh7th/cmp-buffer") -- source for text in buffer, allows nvim-cmp to recommend text from buffer
   use("hrsh7th/cmp-path") -- source for file system paths, allows nvim-cmp to recommend different directories or files 
+  use("hrsh7th/cmp-vsnip")
+  use("hrsh7th/vim-vsnip")
 
   -- snippets
   use("L3MON4D3/LuaSnip") -- snippet engine
@@ -83,7 +85,7 @@ return packer.startup(function(use)
       {"nvim-tree/nvim-web-devicons"},
       {"nvim-treesitter/nvim-treesitter"},
     },
-  }) 
+  })
 
   -- enhance lsp uis
   use("jose-elias-alvarez/typescript.nvim") -- additional functionality for typescript server (
@@ -111,9 +113,14 @@ return packer.startup(function(use)
   use("lewis6991/gitsigns.nvim") -- show line modifications on left hand side
 
   use("mg979/vim-visual-multi")
-        
-  -- github copilot
+
   use("github/copilot.vim")
+
+  -- java integration
+  use("mfussenegger/nvim-jdtls") -- java language server  
+  use("mfussenegger/nvim-dap") -- debugger
+
+  use("folke/which-key.nvim")
 
   if packer_bootstrap then
     require("packer").sync()

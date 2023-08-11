@@ -28,6 +28,7 @@ mason_lspconfig.setup({
     "tailwindcss",
     "lua_ls",
     "emmet_ls",
+  --  "jdtls",
   },
   -- auto-install ocnfigured servers (with lspconfig)
   automatic_installation = true, -- not the same to ensure_enstalled
@@ -42,4 +43,17 @@ mason_null_ls.setup({
   },
   -- auto-install configured formatters & linters (with null-ls)
   automatic_installation = true,
+})
+
+local lspconfig = require('lspconfig')
+local noop = function() end
+
+require('mason-lspconfig').setup_handlers({
+  function(server_name)
+    lspconfig[server_name].setup({
+      on_attach = lsp_attach,
+      capabilities = lsp_capabilities,
+    })
+  end,
+  ['jdtls'] = noop,
 })
