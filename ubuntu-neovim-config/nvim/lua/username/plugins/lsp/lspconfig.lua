@@ -36,7 +36,8 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
   keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
   keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
-
+  keymap.set("n", "<leader>F<CR>", "<Cmd>lua vim.lsp.buf.format()<cr>", opts) -- format file
+  
   -- typescript specific keymaps (e.g. rename file and update imports)
   if client.name == "tsserver" then
     keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>") -- rename file and update imports
@@ -88,6 +89,14 @@ lspconfig["emmet_ls"].setup({
   on_attach = on_attach,
   filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 })
+
+-- config xml server
+lspconfig["lemminx"].setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+  filetypes = {"xml"},
+})
+
 
 -- configure lua server (with special settings)
 lspconfig["lua_ls"].setup({

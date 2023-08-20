@@ -44,7 +44,7 @@ local on_attach = function(client, bufnr)
   nnoremap('<leader>ca', vim.lsp.buf.code_action, bufopts, "Code actions")
   vim.keymap.set('v', "<space>ca", "<ESC><CMD>lua vim.lsp.buf.range_code_action()<CR>",
     { noremap=true, silent=true, buffer=bufnr, desc = "Code actions" })
-  nnoremap('<leader:>f', function() vim.lsp.buf.format { async = true } end, bufopts, "Format file")
+  nnoremap('<leader:>F', function() vim.lsp.buf.format { async = true } end, bufopts, "Format file")
 
   -- Java extensions provided by jdtls
   nnoremap("<C-o>", jdtls.organize_imports, bufopts, "Organize imports")
