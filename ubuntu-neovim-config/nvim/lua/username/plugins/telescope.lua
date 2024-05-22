@@ -12,7 +12,7 @@ end
 
 -- configure telescope
 telescope.setup({
-  -- configure custome mappings
+  -- configure custom mappings
   defaults = {
     mappings = {
       i = {

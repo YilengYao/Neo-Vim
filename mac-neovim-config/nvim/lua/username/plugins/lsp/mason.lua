@@ -28,6 +28,7 @@ mason_lspconfig.setup({
     "tailwindcss",
     "lua_ls",
     "emmet_ls",
+    "rust_analyzer",
   --  "jdtls",
   },
   -- auto-install configured servers (with lspconfig)
@@ -57,3 +58,4 @@ require('mason-lspconfig').setup_handlers({
   end,
   ['jdtls'] = noop,
 })
+
