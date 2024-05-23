@@ -114,13 +114,27 @@ return packer.startup(function(use)
 
 	use("mg979/vim-visual-multi")
 
-	use("github/copilot.vim")
-
 	-- java integration
 	use("mfussenegger/nvim-jdtls") -- java language server
 	use("mfussenegger/nvim-dap") -- debugger
 
 	use("folke/which-key.nvim")
+
+	-- Gen AI Integration
+	use("github/copilot.vim")
+	use({
+		"CopilotC-Nvim/CopilotChat.nvim",
+		branch = "canary",
+		dependencies = {
+			{ "gitpub/copilot" },
+			{ "nvim-lua/plenary.nvim" },
+		},
+		config = function()
+			require("CopilotChat").setup({
+				debug = true,
+			})
+		end,
+	})
 
 	if packer_bootstrap then
 		require("packer").sync()
