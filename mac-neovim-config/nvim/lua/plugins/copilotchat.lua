@@ -26,6 +26,7 @@ return {
       { "nvim-lua/plenary.nvim" },
     },
     opts = {
+      model = "gpt-4",
       question_header = "## User ",
       answer_header = "## Copilot ",
       error_header = "## Error ",
@@ -35,32 +36,40 @@ return {
       auto_follow_cursor = false,
       show_help = false,
       mappings = {
+        -- Tab for completion
         complete = {
           detail = "Use @<Tab> or /<Tab> for options.",
           insert = "<Tab>",
         },
+        -- Close the chat
         close = {
           normal = "q",
           insert = "<C-c>",
         },
+        -- Clear the chat buffer
         reset = {
           normal = "<C-l>",
           insert = "<C-l>",
         },
+        -- Submit the prompt to Copilot
         submit_prompt = {
           normal = "<CR>",
           insert = "<C-CR>",
         },
+        -- Accept the diff
         accept_diff = {
           normal = "<C-y>",
           insert = "<C-y>",
         },
+        -- show_diff
         show_diff = {
           normal = "gmd",
         },
+        -- Show system prompt
         show_system_prompt = {
           normal = "gmp",
         },
+        -- Show user selection
         show_user_selection = {
           normal = "gms",
         },
@@ -141,6 +150,77 @@ return {
           end
         end,
       })
+
+      -- Define the function to prompt the user and run CopilotChat
+      local function ask_copilot()
+        local input = vim.fn.input("Ask Copilot: ")
+        if input ~= "" then
+          vim.cmd("CopilotChat " .. input)
+        end
+      end
+
+      -- Function to get the visual selection range
+      local function get_visual_selection_range()
+        local start_line, start_col = unpack(vim.fn.getpos("'<"), 2, 3)
+        local end_line, end_col = unpack(vim.fn.getpos("'>"), 2, 3)
+        return start_line, start_col, end_line, end_col
+      end
+
+      -- Function to get the selected text
+      local function get_selected_text(start_line, start_col, end_line, end_col)
+        local lines = vim.fn.getline(start_line, end_line)
+        if #lines == 0 then
+          return nil
+        end
+        lines[1] = string.sub(lines[1], start_col)
+        lines[#lines] = string.sub(lines[#lines], 1, end_col)
+        return table.concat(lines, "\n")
+      end
+
+      -- Function to prompt the user and run CopilotChat in visual mode
+      local function ask_copilot_visual()
+        -- Get the visual selection range
+        local start_line, start_col, end_line, end_col = get_visual_selection_range()
+
+        -- Get the selected text
+        local selection = get_selected_text(start_line, start_col, end_line, end_col)
+
+        -- If no text was selected, return
+        if not selection then
+          return
+        end
+
+        -- Prompt the user for input
+        local input = vim.fn.input("Ask Copilot: ", selection)
+        if input ~= "" then
+          vim.cmd("CopilotChat " .. input)
+        end
+      end
+
+      -- Create a user command to ask Copilot
+      vim.api.nvim_create_user_command("AskCopilot", function()
+        ask_copilot()
+      end, { desc = "Ask Copilot a question" })
+
+      vim.api.nvim_create_user_command("AskCopilotVisual", function()
+        ask_copilot_visual()
+      end, { range = true, desc = "Ask Copilot a question with visual selection" })
+
+      -- Custom input for CopilotChat "Space+cci+Enter"
+      ---- (normal mode)
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>cca<CR>",
+        ":AskCopilot<CR>",
+        { desc = "CopilotChat - Ask input", noremap = true, silent = true }
+      )
+      ---- (visual mode)
+      vim.api.nvim_set_keymap(
+        "x",
+        "<leader>cca<CR>",
+        ":AskCopilotVisual<CR>",
+        { desc = "CopilotChat - Ask input with visual selection", noremap = true, silent = true }
+      )
 
       -- Explain code "Space+cce+Enter"
       -- (normal mode)
@@ -364,22 +444,6 @@ return {
         "<leader>ccx<cr>",
         ":CopilotChatInline<cr>",
         { desc = "CopilotChat - Run in-place code", noremap = true, silent = true }
-      )
-
-      -- Custom input for CopilotChat "Space+cci+Enter"
-      ---- (normal mode)
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>cci<cr>",
-        ":lua AskCopilot()<cr>",
-        { desc = "CopilotChat - Ask input", noremap = true, silent = true }
-      )
-      ---- (visual mode)
-      vim.api.nvim_set_keymap(
-        "x",
-        "<leader>cci<cr>",
-        ":lua AskCopilotVisual()<cr>",
-        { desc = "CopilotChat - Ask input (visual)", noremap = true, silent = true }
       )
 
       -- Debug Info "Space+ccdb+Enter"
