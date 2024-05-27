@@ -1,3 +1,40 @@
+local function get_package_name()
+  local filepath = vim.fn.expand("%:p")
+  local package_path = filepath:match("src/main/java/(.*)/[^/]+%.java")
+  if package_path then
+    return "package " .. package_path:gsub("/", ".") .. ";"
+  else
+    return nil
+  end
+end
+
+local function insert_package_declaration()
+  local package_declaration = get_package_name()
+  if package_declaration then
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    -- Check if the package declaration already exists
+    if not vim.startswith(lines[1], "package ") then
+      -- Insert the package declaration at the top
+      table.insert(lines, 1, package_declaration)
+      table.insert(lines, 2, "") -- Add an empty line after the package declaration
+      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+    end
+  else
+    print("Could not determine package name from file path.")
+  end
+end
+
+local function organize_imports_and_add_package()
+  require("jdtls").organize_imports()
+  insert_package_declaration()
+end
+
+vim.api.nvim_create_user_command("AddPackageDeclaration", function()
+  insert_package_declaration()
+end, { desc = "Add package declaration to the top of the file" })
+
 java_filetypes = { "java" }
 return {
   {
@@ -134,7 +171,7 @@ return {
               ["gS"] = { require("jdtls.tests").goto_subjects, "Goto Subjects" },
               ["gd"] = { vim.lsp.buf.definition, "go to definition" },
               ["gi"] = { vim.lsp.buf.implementation, "go to implementation" },
-              ["<leader>co"] = { require("jdtls").organize_imports, "Organize Imports" },
+              ["<leader>co"] = { organize_imports_and_add_package, "Organize Imports and Add Package" },
               ["K"] = { vim.lsp.buf.hover, "show doc" },
               ["<C-Space>"] = { vim.lsp.buf.signature_help, "Show signature" },
               ["<space>w"] = { name = "+Workspace" },
