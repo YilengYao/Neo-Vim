@@ -5,7 +5,7 @@ local keymap = vim.keymap -- for conciseness
 -- general keymaps
 -- <CR> means enter key
 keymap.set("n", "<leader>h", "_") -- space + h will move cursor to beginning of first whitespace of the line
-keymap.set("n", "<leader>l", "$") -- space + l will move cursor to end of line
+keymap.set("n", "<leader>;", "$") -- space + l will move cursor to end of line
 
 -- -- press space + / will clear search
 keymap.set("n", "<leader>/", ":nohl<CR>")
@@ -49,11 +49,11 @@ keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string u
 keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>") -- list open buffers in current newovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- list available help tags
 -- telescope git commands
-keymap.set("n", "<leader>gff", "<cmd>Telescope git_files<cr>") -- find files with in git directory
-keymap.set("n", "<leader>gc", "<cmd>Telescope git_commits<cr>") -- list all git commits (use <cr> to checkout) ["gc" for git commits]
-keymap.set("n", "<leader>gfc", "<cmd>Telescope git_bcommits<cr>") -- list git commit for current file/buffer (use <cr> to checkout) ["gfc" for git file commits]
-keymap.set("n", "<leader>gb", "<cmd>Telescope git_branches<cr>") -- list git branches (use <cr> to checkout) ["gb" for git branch]
-keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>") -- list current changes per file of diff preview ["gs" for git status]
+keymap.set("n", "<leader>gff", "<cmd>TelescopeGitFiles<cr>") -- find files with in git directory
+keymap.set("n", "<leader>gc", "<cmd>TelescopeGitCommits<cr>") -- list all git commits (use <cr> to checkout) ["gc" for git commits]
+keymap.set("n", "<leader>gfc", "<cmd>TelescopeGitBCommits<cr>") -- list git commit for current file/buffer (use <cr> to checkout) ["gfc" for git file commits]
+keymap.set("n", "<leader>gb", "<cmd>TelescopeGitBranches<cr>") -- list git branches (use <cr> to checkout) ["gb" for git branch]
+keymap.set("n", "<leader>gs", "<cmd>TelescopeGitStatus<cr>") -- list current changes per file of diff preview ["gs" for git status]
 
 -- restart lsp server
 keymap.set("n", "<leader>rs", ":LspRestart<CR>") -- mapping to restart lsp if necessary
@@ -65,9 +65,9 @@ keymap.set("n", "<leader>bl", "<cmd>lua require'dap'.set_breakpoint(nil, nil, vi
 keymap.set("n", "<leader>br", "<cmd>lua require'dap'.clear_breakpoints()<cr>")
 keymap.set("n", "<leader>ba", "<cmd>Telescope dap list_breakpoints<cr>")
 require("which-key").register({
-	v = {
-		name = "test",
-	},
+  v = {
+    name = "test",
+  },
 }, { prefix = "<leader>" })
 
 keymap.set("n", "<leader>dc", "<cmd>lua require'dap'.continue()<cr>")
@@ -79,16 +79,16 @@ keymap.set("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>")
 keymap.set("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>")
 keymap.set("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>")
 keymap.set("n", "<leader>di", function()
-	require("dap.ui.widgets").hover()
+  require("dap.ui.widgets").hover()
 end)
 keymap.set("n", "<leader>d?", function()
-	local widgets = require("dap.ui.widgets")
-	widgets.centered_float(widgets.scopes)
+  local widgets = require("dap.ui.widgets")
+  widgets.centered_float(widgets.scopes)
 end)
 keymap.set("n", "<leader>df", "<cmd>Telescope dap frames<cr>")
 keymap.set("n", "<leader>dh", "<cmd>Telescope dap commands<cr>")
 require("which-key").register({
-	d = {
-		name = "debug",
-	},
+  d = {
+    name = "debug",
+  },
 }, { prefix = "<leader>" })
